@@ -6,6 +6,10 @@ The ports you need to have open are:
 * UDP/TCP 7777 - Dead Matter 1
 * UDP/TCP 7778 - Dead Matter 2
 
+# Common Issues
+
+* Currently due to a bug, you must log into a Steam client that owns a copy of Dead Matter at least once in order to start the dedicated server. You can log out after logging into the client once. It is not confirmed if you can restart the machine after logging out and reboot the server without having to log back into a client.
+
 # Server Config
 
 The server configuration can be changed via editing the config `.ini` files located in `[ServerInstallDirectory]/deadmatter/Saved/Config/WindowsServer`. The file, section, and variable to change depends on the variable being modified.
