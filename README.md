@@ -16,6 +16,10 @@ The server configuration can be changed via editing the config `.ini` files loca
 
 If not otherwise specified, the file to modify is `Game.ini`.
 
+## Steam Query Port
+
+You must open a UDP port for Steam Query (default is 27016). You can configure the server to use different Steam Query ports via `Game.ini` and `Engine.ini` see the example files in this repo.
+
 ## Example
 
 If we are modifying `Game.ini`,
