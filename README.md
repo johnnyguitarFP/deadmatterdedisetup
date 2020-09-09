@@ -1,3 +1,7 @@
+# Common Issues
+
+* Currently due to a bug, you must log into a Steam client that owns a copy of Dead Matter at least once in order to start the dedicated server. You can log out after logging into the client once. It is not confirmed if you can restart the machine after logging out and reboot the server without having to log back into a client.
+
 # Port Forwarding
 
 The ports you need to have open are:
@@ -6,26 +10,18 @@ The ports you need to have open are:
 * UDP/TCP 7777 - Dead Matter 1
 * UDP/TCP 7778 - Dead Matter 2
 
-# Common Issues
-
-* Currently due to a bug, you must log into a Steam client that owns a copy of Dead Matter at least once in order to start the dedicated server. You can log out after logging into the client once. It is not confirmed if you can restart the machine after logging out and reboot the server without having to log back into a client.
-
 # Server Config
 
 The server configuration can be changed via editing the config `.ini` files located in `[ServerInstallDirectory]/deadmatter/Saved/Config/WindowsServer`. The file, section, and variable to change depends on the variable being modified.
 
 If not otherwise specified, the file to modify is `Game.ini`.
 
-## Steam Query Port
-
-You must open a UDP port for Steam Query (default is 27016). You can configure the server to use different Steam Query ports via `Game.ini` and `Engine.ini` see the example files in this repo.
-
 ## Example
 
 If we are modifying `Game.ini`,
 
 ```
-[/Script/DeadMatter.SurvivalBaseGameState]
+[/Script/DeadMatter.DMGameSession]
 ServerName=My Server
 ```
 
@@ -33,29 +29,47 @@ The above snippet will cause the server name to be displayed as "My Server".
 
 ## Config Reference
 
-### `[URL]` (Engine.ini)
+### Engine.ini
+
+#### `[URL]`
 
 `Port=7777`
 Change the server's port.
 
-### `[/Script/Engine.GameSession]`
+### Game.ini
+
+#### `[Steam]`
+
+`Port=7777`
+Change the Steam advertised gameserver port. If this is absent it'll just use the server's port.
+
+`SteamPort=7778`
+Change the Steam communications port.
+
+`SteamQueryPort=27016`
+The port used to query A2S_INFO requests. This is what tells players who's on the server from the server browser.
+
+`Host=0.0.0.0`
+Host to advertise to Steam.
+
+#### `[/Script/Engine.GameSession]`
 
 `MaxPlayers=36`
 Maximum player count for the server.
 
-### `[/Script/DeadMatter.SurvivalBaseGameState]`
+#### `[/Script/DeadMatter.DMGameSession]`
 
 ```
-+Admins=Abc
-+Admins=Def
-+Admins=Ghi
+Admins=Abc
+Admins=Def
+Admins=Ghi
 ```
 List of SteamIDs to mark with admin abilities. Suggested to be used for normal server moderators who do not need access to operational server functionality.
 
 ```
-+SuperAdmins=Abc
-+SuperAdmins=Def
-+SuperAdmins=Ghi
+SuperAdmins=Abc
+SuperAdmins=Def
+SuperAdmins=Ghi
 ```
 List of SteamIDs to mark with admin abilities. Suggested to be used for server owners and advanced moderators who will need access to operation server functionality such as server restarts.
 
@@ -66,9 +80,9 @@ Server name. Has a soft limit of 255 characters due to Steam server limitations.
 Server password. Has a soft limit of 255 characters due to Steam server limitations.
 
 ```
-+ServerTags="Abc:1"
-+ServerTags="Def:Test"
-+ServerTags="Ghi:Whatever"
+ServerTags="Abc:1"
+ServerTags="Def:Test"
+ServerTags="Ghi:Whatever"
 ```
 List of server tags for Steam - eg. 'Roleplay,' 'Hardcore,' 'PvP,' etc.
 
@@ -105,7 +119,7 @@ Toggles whether or not PVP is enabled. If this is false, no damage can be inflic
 `FallDamageMultiplier=1.0`
 Change how much damage falling does here. 1.0 is full damage, 0 is no damage at all.
 
-### `[/Script/DeadMatter.SurvivalBaseGamemode]`
+#### `[/Script/DeadMatter.SurvivalBaseGamemode]`
 
 `WhitelistActive=false`
 If the server whitelist is enabled.
@@ -117,24 +131,29 @@ If the server whitelist is enabled.
 ```
 List of SteamIDs to be allowed on the server if `WhitelistActive` is true.
 
-### `[/Script/DeadMatter.FlockSpawner]`
+#### `[/Script/DeadMatter.FlockSpawner]`
 
 `AnimalSpawnMultiplier=1.0`
 How many more animals to spawn than usual.
 
-### `[/Script/DeadMatter.GlobalAISpawner]`
+#### `[/Script/DeadMatter.GlobalAISpawner]`
 
 `ZombieSpawnMultiplier=1.0`
 How many more zombies to spawn than usual.
 
-### `[/Script/DeadMatter.Agenda]`
+#### `[/Script/DeadMatter.Agenda]`
 
 `Timescale=5.5`
 The timescale, relative to real time. The default value of 5.5 indicates that one real-life second is 5.5 seconds ingame.
 
-### `[/Script/DeadMatter.ZombiePawn]`
+#### `[/Script/DeadMatter.ZombiePawn]`
 
 `AttackMultiplier=1.0`
 How strongly the zombies do damage. Set to zero to disable.
 `DefenseMultiplier=1.0`
 How much the zombies soak up hits. Set to zero to make them made of paper.
+
+# Command Line Arguments
+
+`-multihome=0.0.0.0`
+The IP to bind the server to.
